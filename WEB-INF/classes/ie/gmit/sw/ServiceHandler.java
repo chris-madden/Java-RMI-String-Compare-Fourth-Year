@@ -3,14 +3,16 @@ package ie.gmit.sw;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
+import javax.sql.rowset.serial.SerialException;
 
 public class ServiceHandler extends HttpServlet {
 	private String remoteHost = null;
 	private static long jobNumber = 0;
 
-	public void init() throws ServletException {
+	public void init() throws ServletException { 
 		ServletContext ctx = getServletContext();
 		remoteHost = ctx.getInitParameter("RMI_SERVER"); //Reads the value from the <context-param> in web.xml
+	
 	}
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
