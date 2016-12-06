@@ -6,18 +6,30 @@ import javax.servlet.http.*;
 import javax.sql.rowset.serial.SerialException;
 
 public class ServiceHandler extends HttpServlet {
+	
+	// Blocking queue to take  a type ClientStringAlgorithm which contains details from client
+	private BlockingQueue<ClientStringAlgorithm> queue = new LinkedBlockingQueue<ClientStringAlgorithm>();
+	
 	private String remoteHost = null;
 	private static long jobNumber = 0;
 
-	public void init() throws ServletException { 
+	public void init() throws ServletException 
+	{
+		
 		ServletContext ctx = getServletContext();
 		remoteHost = ctx.getInitParameter("RMI_SERVER"); //Reads the value from the <context-param> in web.xml
 	
 	}
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		// Declare variables
+		ClientStringAlgorithm csa;
+		
 		resp.setContentType("text/html");
 		PrintWriter out = resp.getWriter();
+		
+		
 		
 		//Initialise some request varuables with the submitted form info. These are local to this method and thread safe...
 		String algorithm = req.getParameter("cmbAlgorithm");
@@ -30,9 +42,18 @@ public class ServiceHandler extends HttpServlet {
 		out.print("</head>");		
 		out.print("<body>");
 		
-		if (taskNumber == null){
+		// =====  Initialise ClientStringAlgorithm  =====
+		
+		if (taskNumber == null)
+		{
+			
 			taskNumber = new String("T" + jobNumber);
+			
 			jobNumber++;
+			
+			csa = new ClientStringAlgorithm(s, t, algorithm, taskNumber);
+			
+			
 			//Add job to in-queue
 		}else{
 			//Check out-queue for finished job
@@ -46,8 +67,8 @@ public class ServiceHandler extends HttpServlet {
 		out.print("<font color=\"#993333\"><b>");
 		out.print("RMI Server is located at " + remoteHost);
 		out.print("<br>Algorithm: " + algorithm);		
-		out.print("<br>String <i>s</i> : " + s);
-		out.print("<br>String <i>t</i> : " + t);
+		out.print("<br>String <i>s</i> : " + csa.getString1());
+		out.print("<br>String <i>t</i> : " + csa.getStirng2());
 		out.print("<br>This servlet should only be responsible for handling client request and returning responses. Everything else should be handled by different objects.");
 		out.print("Note that any variables declared inside this doGet() method are thread safe. Anything defined at a class level is shared between HTTP requests.");				
 		out.print("</b></font>");
