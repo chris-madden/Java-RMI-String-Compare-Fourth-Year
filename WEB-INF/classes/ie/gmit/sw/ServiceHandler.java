@@ -1,13 +1,15 @@
 package ie.gmit.sw;
 
 import java.io.*;
+import java.util.concurrent.BlockingQueue;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.sql.rowset.serial.SerialException;
 
 public class ServiceHandler extends HttpServlet {
 	
-	// Blocking queue to take  a type ClientStringAlgorithm which contains details from client
+	// Blocking queue to take  a type ClientStringAlgorithm which containClientStringAlgorithm
 	private BlockingQueue<ClientStringAlgorithm> queue = new LinkedBlockingQueue<ClientStringAlgorithm>();
 	
 	private String remoteHost = null;
@@ -29,7 +31,8 @@ public class ServiceHandler extends HttpServlet {
 		resp.setContentType("text/html");
 		PrintWriter out = resp.getWriter();
 		
-		
+		// Get the result of the compared strings back from the servlet
+		StringService ss = (StringService) Naming.lookup("rmi://localhost:1099/compareStrings");
 		
 		//Initialise some request varuables with the submitted form info. These are local to this method and thread safe...
 		String algorithm = req.getParameter("cmbAlgorithm");
@@ -42,8 +45,6 @@ public class ServiceHandler extends HttpServlet {
 		out.print("</head>");		
 		out.print("<body>");
 		
-		// =====  Initialise ClientStringAlgorithm  =====
-		
 		if (taskNumber == null)
 		{
 			
@@ -51,7 +52,14 @@ public class ServiceHandler extends HttpServlet {
 			
 			jobNumber++;
 			
+			// Initialise client details
 			csa = new ClientStringAlgorithm(s, t, algorithm, taskNumber);
+			
+			// Add client details to the queue
+			queue.add(csa);
+			
+			// Pass to thread
+			new CompareWorker(queue, csa, ss);
 			
 			
 			//Add job to in-queue
