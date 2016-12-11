@@ -3,12 +3,13 @@ package ie.gmit.sw;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-//Implementation of Interfaces are "Server side" (Do the real work)
+/*
+ *   This class implements Resultator interface.
+ *   It gets and sets the result of string commparison and whether the process has been finished yet
+ */
 
 public class ResultatorImpl extends UnicastRemoteObject implements Resultator
 {
-
-	// Class will return result of the string comparison
 	
 	private static final long serialVersionUID = 1L;
 	

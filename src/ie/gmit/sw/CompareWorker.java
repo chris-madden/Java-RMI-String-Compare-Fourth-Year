@@ -5,10 +5,8 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
 /*
- * 
  *   This class retrieves the client details from a queue and calls the compare method in a thread
  *   It passes over the details and will recieve the result of the comparison
- *   
  */
 
 public class CompareWorker implements Runnable
@@ -61,7 +59,6 @@ public class CompareWorker implements Runnable
 		
 		try 
 		{
-			
 			// Get result from the compare method
 			Resultator r = ss.compare(newCsa.getString1(), newCsa.getStirng2(), newCsa.getAlgorithmChoice());
 			

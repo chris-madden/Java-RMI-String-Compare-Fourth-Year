@@ -2,7 +2,9 @@ package ie.gmit.sw;
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 
-// "Server side" 
+/*
+ *  Class has main method which starts RMI registry
+ */
 
 public class Servant {
 

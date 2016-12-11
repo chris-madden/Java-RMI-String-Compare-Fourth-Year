@@ -3,7 +3,10 @@ package ie.gmit.sw;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-// Implementation of Interfaces are "Server side" (Do the real work)
+/*
+ *   This class impements the methods from the StringService interface.
+ *   It is only implenting my getMessage method which is what i used to get test that the RMI is working.
+ */
 
 public class StringServiceImpl extends UnicastRemoteObject implements StringService{
 
@@ -13,7 +16,6 @@ public class StringServiceImpl extends UnicastRemoteObject implements StringServ
 
 	public String getMessage()
 	{
-		
 		return "RMI is working here";
 	}
 	
@@ -54,7 +56,7 @@ public class StringServiceImpl extends UnicastRemoteObject implements StringServ
 		
 		// ==================================================================
 		
-		// Convert dsitance to a string 
+		// ==========  Convert dsitance to a string and set result  ========== 
 		String stringDistance = Integer.toString(distance);
 		
 		// Set the result of the compared strings here

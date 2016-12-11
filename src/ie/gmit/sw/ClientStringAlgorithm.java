@@ -1,9 +1,7 @@
 package ie.gmit.sw;
 
 /*
- * 
  *   This class gets and set the details from the client
- * 
  */
 
 public class ClientStringAlgorithm {

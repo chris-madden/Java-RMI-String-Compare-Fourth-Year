@@ -3,6 +3,7 @@ package ie.gmit.sw;
 import java.io.*;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
+import java.rmi.registry.LocateRegistry;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -10,23 +11,30 @@ import java.util.concurrent.LinkedBlockingQueue;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-// "Client Side"
+/*
+ *   This class gets the input from the user.
+ *   It looks up the RMI registry and finds  the method getMessage.
+ *   The message retrieved is stored in a variable which is displayed at the top of the "doProcess" page
+ *   
+ *   Other work going on includes the user details being initialised in a class called ClientStringAlgorithm and then the object is put in a BlockingQueue.
+ *   This is the end of the pojects functionality, the reason for this is explained in the README.txt
+ */
+
 public class ServiceHandler extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
 	
-	/*// Blocking queue to take  a type ClientStringAlgorithm which containClientStringAlgorithm
-	private BlockingQueue<ClientStringAlgorithm> queue = new LinkedBlockingQueue<ClientStringAlgorithm>();
+	// Blocking queue to take  a type ClientStringAlgorithm which containClientStringAlgorithm
+	public static BlockingQueue<ClientStringAlgorithm> queue = new LinkedBlockingQueue<ClientStringAlgorithm>();
 	
 	// Out queue which will take the task number and result of the string comparison
 	private static Map<String, Resultator> outQueueMap = new ConcurrentHashMap<String,Resultator>();
-	*/
+	
+	ClientStringAlgorithm csa;
+	private StringService ss;
 	private String remoteHost = null;
 	private static long jobNumber = 0;
-	
-	StringService ss;
-	int algorithmScore;
-	
+		
 	public void init() throws ServletException 
 	{
 		
@@ -69,7 +77,7 @@ public class ServiceHandler extends HttpServlet{
 		String taskNumber = req.getParameter("frmTaskNumber");
 		
 		// ==========================================================================================================
-/*
+
 		out.print("<html><head><title>Distributed Systems Assignment</title>");		
 		out.print("</head>");		
 		out.print("<body>");
@@ -98,26 +106,24 @@ public class ServiceHandler extends HttpServlet{
 			
 			// Pass to thread
 			//CompareWorker cw = new CompareWorker(queue, csa, ss, outQueueMap);
-			
-			Thread thread = new Thread(new CompareWorker(queue, csa, ss, outQueueMap));
-			thread.start();
 						
-			// Get the result for this tasknumber
+			/*	// Get the result for this tasknumber
 			Resultator result = outQueueMap.get(taskNumber);
 			
 			// Retrieve the string with the score
 			algorithmScore = result.getResult();
+			*/
 			
-			//Add job to in-queue
+			
 		}else{
 			//Check out-queue for finished job
-		}*/
+		}
 		
 		//out.print("A New Message has arrived!!!!!!! "   +  csa.getString1());
 		/*out.print("A New Message has arrived!!!!!!! SCORE = " + algorithmScore);*/
-		out.print("<br>========================================================================<br>");
+		out.print("==============================<br>");
 		out.print("RMI Message says " + RMI_Message);
-		out.print("<br>========================================================================<br>");
+		out.print("<br>=========================<br>");
 		
 		
 		out.print("<H1>Processing request for Job#: " + taskNumber + "</H1>");
